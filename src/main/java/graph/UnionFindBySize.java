@@ -30,8 +30,8 @@ public class UnionFindBySize<E> implements UnionFind<E> {
         }
     }
 
-    private void connect(E root1, E root2) {
-        if (root1.equals(root2))
+    private void connect(E root1, E root2) {      
+        if (root1 == root2)
             return;
         int curSize = size.get(root1) + size.get(root2);
         parent.put(root2, Optional.of(root1));
