@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 import graph.*;
 
@@ -42,8 +43,8 @@ public class ProblemSolver implements IProblem {
 	public <V> V lca(Graph<V> g, V root, V u, V v) {
 		List<V> pathU = new ArrayList<>();
 		List<V> pathV = new ArrayList<>();
-		pathU = bfsPath(root, u, g);
-		pathV = bfsPath(root, v, g);
+		pathU = dfsPath(root, u, g);
+		pathV = dfsPath(root, v, g);
 
 		// finner den korteste listen
 		int size = pathV.size();
@@ -59,27 +60,28 @@ public class ProblemSolver implements IProblem {
 		return root;
 	}
 
-	private <V> List<V> bfsPath(V root, V target, Graph<V> graph) {
-		Queue<V> queue = new LinkedList<>();
+	private <V> List<V> dfsPath(V root, V target, Graph<V> graph) {
+		Stack<V> stack = new Stack<>();
 		Map<V, V> parentMap = new HashMap<>();// hashMap med <child, parent>
 		List<V> path = new ArrayList<>();
 
-		queue.add(root);// legger til root i kø
+		stack.push(root);// legger til root i stakken
 		parentMap.put(root, null); // root er stamfar, har ingen foreldre
 
-		while (!queue.isEmpty()) {// imens køen ikke er full
-			V current = queue.poll();// currentNode er første i køen.
-			if (current == target) {// hvis vi har funnet target
+		while (!stack.isEmpty()) {// imens stakken ikke er tom
+			V current = stack.pop();// currentNode er øverst i stakken.
+
+			if (current.equals(target)) {// hvis vi har funnet target
 				for (V node = target; node != null; node = parentMap.get(node)) {
 					path.add(0, node); // legger til alle foreldrene til vi kommer til root
 				}
 				return path;
 			}
 
-			// legge til currents barn i queue, legge til barna til current i parentMap
+			// legge til currents barn i stakken, legge til barna til current i parentMap
 			for (V child : graph.neighbours(current)) {
 				if (!parentMap.containsKey(child)) {
-					queue.add(child);
+					stack.push(child);
 					parentMap.put(child, current);
 				}
 			}
@@ -91,51 +93,96 @@ public class ProblemSolver implements IProblem {
 	@Override
 	public <V> Edge<V> addRedundant(Graph<V> g, V root) {
 		LinkedList<Graph<V>> Trees = biggestSubTreeList(g, root);
-		
-		Graph<V> firstTree =  Trees.removeFirst();//strøste treet i grafen
-		Graph<V> secondTree =  Trees.removeFirst();//nest største treet i grafen
 
+		Graph<V> firstBiggestTree = Trees.removeFirst();
+		Graph<V> secondBiggestTree = Trees.removeFirst();
 
+		V node1 = getDeepestNodeWithMostNeighbours(firstBiggestTree);
+		V node2 = getDeepestNodeWithMostNeighbours(secondBiggestTree);
 
-		//feste nederst på siste utgrening
-		//sjekke hvilke av de nederste som er 
+		// Check if nodes are valid
+		if (node1 == null || node2 == null) {
+			//throw new IllegalStateException("Unable to find a valid node in one of the trees.");
+			return null;
+		}
+		if (node1.equals(node2)) {
+			return null;
+		}
 
+		Edge<V> edge = new Edge<V>(node1, node2);
+
+		return edge;
 	}
 
-	// lag en hjelpe metode som går igjennom subtrær og teller hvor mange noder. De
-	// to med flest etter root, skal vaier gå mellom
-	// root må være nabo
+	private static <V> V getDeepestNodeWithMostNeighbours(Graph<V> graph) {
+		Set<V> visited = new HashSet<>();
+		Queue<V> queue = new LinkedList<>();
+
+		V firstNode = graph.getFirstNode();
+		queue.add(firstNode);
+		V currentNode = null;
+		int maxNeighbours = -1;
+
+		while (!queue.isEmpty()) {
+			V node = queue.poll();
+			visited.add(node);
+
+			int currentNeighboursCount = graph.degree(node);
+			if (currentNeighboursCount >= maxNeighbours) {
+				currentNode = node;
+				maxNeighbours = currentNeighboursCount;
+			}
+
+			for (V neighbour : graph.neighbours(node)) {
+				if (!visited.contains(neighbour) && !queue.contains(neighbour)) {
+					queue.add(neighbour);
+				}
+			}
+		}
+
+		if (currentNode == null) {
+			throw new IllegalStateException("Unable to find a node with the most neighbors.");
+		}
+
+		return currentNode;
+	}
+
 	private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {
 		LinkedList<Graph<V>> treeList = new LinkedList<>();
-
+		//her er d noe problem
 		for (V node : g.neighbours(root)) {
 			treeList.add(bfsSubTree(node, g));
 		}
-		treeList.sort(Comparator.comparingInt((Graph<V> graph) -> graph.numVertices()).reversed());//sorterer denne listen? Sorterer på numVertices()
+		treeList.sort(Comparator.comparingInt((Graph<V> graph) -> graph.numVertices()).reversed());
+		if (treeList.size() < 2) {
+			throw new IllegalStateException("Not enough subtrees to compare.");
+		}
 		return treeList;
 	}
 
-	private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g) {
+	private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g) {// lagger subtree fra en gitt node. Vil at den skal finne
+		if (g == null) {
+			throw new IllegalArgumentException("Graph cannot be null.");
+		}								
+		Graph<V> subTree = new Graph<>();// nytt tomt tree
+		subTree.addVertex(startNode);// legger til ny root
 
-		Graph<V> subTree = new Graph<>();//nytt tomt tree
-		subTree.addVertex(startNode);//legger til ny root
+		Set<V> visited = new HashSet<>();// tomt hashset
+		ArrayList<V> queue = new ArrayList<>();// tom queue
 
-		Set<V> visited = new HashSet<>();//tomt hashset
-		ArrayList<V> queue = new ArrayList<>();//tom queue
+		visited.add(startNode);// legger til startNode i visited
+		queue.add(startNode);// legger til startNode i køen
 
-		visited.add(startNode);//legger til startNode i visited
-		queue.add(startNode);//legger til startNode i køen
+		while (!queue.isEmpty()) {// i mens køen ikke er tom
+			V current = queue.remove(0);// current er køens førstemann
 
-		while (!queue.isEmpty()) {//i mens køen ikke er tom
-			V current = queue.remove(0);//current er køens førstemann
+			for (V neighbor : g.neighbours(current)) {// for barna til current
+				if (!current.equals(neighbor) && !visited.contains(neighbor)) {// hvis naboene ikke er besøkt
+					visited.add(neighbor);// legg til nabo i besøkt
+					queue.add(neighbor);// legg til nabo i kø
 
-			for (V neighbor : g.neighbours(current)) {//for barna til current
-				if (!visited.contains(neighbor)) {//hvis naboene ikke er besøkt
-					visited.add(neighbor);//legg til nabo i besøkt
-					queue.add(neighbor);//legg til nabo i kø
-
-					subTree.addVertex(neighbor);//legger til noden i treet
-					subTree.addEdge(current, neighbor);//legger til kanten i treet
+					subTree.addVertex(neighbor);// legger til noden i treet
+					subTree.addEdge(current, neighbor);// legger til kanten i treet
 				}
 			}
 		}
@@ -143,5 +190,3 @@ public class ProblemSolver implements IProblem {
 	}
 
 }
-
-// feste vaier på bunnen av subtree som redder flest hus. ferdig
