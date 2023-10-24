@@ -94,30 +94,33 @@ public class ProblemSolver implements IProblem {
 	}
 
 	@Override
-public <V> Edge<V> addRedundant(Graph<V> g, V root) {
-    LinkedList<Graph<V>> Trees = biggestSubTreeList(g, root);
+	public <V> Edge<V> addRedundant(Graph<V> g, V root) {
+		LinkedList<Graph<V>> Trees = biggestSubTreeList(g, root);
 
-    Graph<V> firstBiggestTree = Trees.poll();
-    Graph<V> secondBiggestTree = Trees.poll();
+		Graph<V> firstBiggestTree = Trees.poll();
+		Graph<V> secondBiggestTree = Trees.poll();
 
-    V node1 = null;
-    V node2 = null;
-    
-    if(firstBiggestTree != null) {
-        node1 = getDeepestNodeWithMostNeighbours(firstBiggestTree);
-    }
-    
-    if(secondBiggestTree != null) {
-        node2 = getDeepestNodeWithMostNeighbours(secondBiggestTree);
-    }
-    
-    Edge<V> edge = new Edge<V>(root, node1);
-    
-	if (node1 != null && node2 != null) {
-		edge = new Edge<V>(node1, node2);
+		V node1 = null;
+		V node2 = null;
+		
+		if(firstBiggestTree != null) {
+			node1 = getDeepestNodeWithMostNeighbours(firstBiggestTree);
 		}
-	return edge;
-}
+		
+		if(secondBiggestTree != null) {
+			node2 = getDeepestNodeWithMostNeighbours(secondBiggestTree);
+		}
+		
+		Edge<V> edge = new Edge<V>(root, node1);
+		
+		if (node1 != null && node2 != null) {
+			edge = new Edge<V>(node1, node2);
+			}
+		else if(node1 != null) {
+			edge = new Edge<V>(root, node1);
+		}
+		return edge;
+	}
 
 	//fester til groveste foreldrer
 	private static <V> V getDeepestNodeWithMostNeighbours(Graph<V> graph) {
@@ -163,19 +166,16 @@ public <V> Edge<V> addRedundant(Graph<V> g, V root) {
 	private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {
 		LinkedList<Graph<V>> treeList = new LinkedList<>();
 
-		
 		for (V node : g.neighbours(root)) {
 			treeList.add(bfsSubTree(node, g, root));
 		}
-		
-		treeList.sort(Comparator.comparingInt((Graph<V> graph) -> graph.numVertices()).reversed());
 
+		treeList.sort(Comparator.comparingInt((Graph<V> graph) -> graph.numVertices()).reversed());
 		return treeList;
 	}
 
 	
-	private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g, V root) {// lagger subtree fra en gitt node. Vil at den
-																		// skal finne
+	private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g, V root) {	
 		Graph<V> subTree = new Graph<>();// nytt tomt tree
 		subTree.addVertex(startNode);// legger til ny root
 
@@ -189,9 +189,7 @@ public <V> Edge<V> addRedundant(Graph<V> g, V root) {
 			V current = queue.poll();// current er køens førstemann
 
 			for (V neighbor : g.neighbours(current)) {// for barna til current
-				if (!current.equals(neighbor) && !visited.contains(neighbor) && !current.equals(root)) {// hvis naboene
-																										// ikke er
-																										// besøkt
+				if (!current.equals(neighbor) && !visited.contains(neighbor) && !current.equals(root)) {																
 					visited.add(neighbor);// legg til nabo i besøkt
 					queue.add(neighbor);// legg til nabo i kø
 
