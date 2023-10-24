@@ -53,11 +53,14 @@ public class ProblemSolver implements IProblem {
 		}
 
 		// når stiene ikke er like, retirerer vi noden før de ble ulike
+		V lastCommon = root;
 		for (int i = 0; i < size; i++) {
-			if (!(pathU.get(i).equals(pathV.get(i))))
-				return pathU.get(i - 1);
+			if (!pathU.get(i).equals(pathV.get(i))) {
+				return lastCommon;
+			}
+			lastCommon = pathU.get(i);
 		}
-		return root;
+		return lastCommon;
 	}
 
 	private <V> LinkedList<V> dfsPath(V root, V target, Graph<V> graph) {
@@ -91,64 +94,88 @@ public class ProblemSolver implements IProblem {
 	}
 
 	@Override
-	public <V> Edge<V> addRedundant(Graph<V> g, V root) {
-		LinkedList<Graph<V>> Trees = biggestSubTreeList(g, root);
+public <V> Edge<V> addRedundant(Graph<V> g, V root) {
+    LinkedList<Graph<V>> Trees = biggestSubTreeList(g, root);
 
-		Graph<V> firstBiggestTree = Trees.poll();
-		Graph<V> secondBiggestTree = Trees.poll();
+    Graph<V> firstBiggestTree = Trees.poll();
+    Graph<V> secondBiggestTree = Trees.poll();
 
-		V node1 = getDeepestNodeWithMostNeighbours(firstBiggestTree);
-		V node2 = getDeepestNodeWithMostNeighbours(secondBiggestTree);
+    V node1 = null;
+    V node2 = null;
+    
+    if(firstBiggestTree != null) {
+        node1 = getDeepestNodeWithMostNeighbours(firstBiggestTree);
+    }
+    
+    if(secondBiggestTree != null) {
+        node2 = getDeepestNodeWithMostNeighbours(secondBiggestTree);
+    }
+    
+    Edge<V> edge = new Edge<V>(root, node1);
+    
+	if (node1 != null && node2 != null) {
+		edge = new Edge<V>(node1, node2);
+		}
+	return edge;
+}
 
-		Edge<V> edge = new Edge<V>(node1, node2);
-		return edge;
-	}
-
-	private static <V> V getDeepestNodeWithMostNeighbours(Graph<V> graph) {//går igjennom hele treet på nytt
-		Set<V> visited = new HashSet<>();
+	//fester til groveste foreldrer
+	private static <V> V getDeepestNodeWithMostNeighbours(Graph<V> graph) {
+		Map<V, Integer> depthMap = new HashMap<>();// map med dybden til en node
 		Queue<V> queue = new LinkedList<>();
+		V root = graph.getFirstNode();// rooten
+		queue.add(root);// legger til root i køen
+		depthMap.put(root, 0);// root har dybde 0
 
-		V firstNode = graph.getFirstNode();//rooten
-		queue.add(firstNode);//legger til rot i køen
-		V champNode = null;//current node er ingenting i starten
-		int maxNeighbours = 0;//maxNeighbours = teller
+		int maxDepth = 0; // max depth settes til 0
 
+		// bryr oss bare om dybden
 		while (!queue.isEmpty()) {// imens køen ikke er tom
-			V currentNode = queue.poll(); //henter ut første i køen og fjerner den
-			visited.add(currentNode);//legger til i besøkt listen
-
-			int currentNeighboursCount = graph.degree(currentNode); //current neigbours = gradtallet til den gitte noden
-			if (currentNeighboursCount >= maxNeighbours) {//om currentNeighboursCount har mer enn max Neighbours
-			  	champNode = currentNode;//currentnode = champnode
-				maxNeighbours = currentNeighboursCount; //maxNeighbours er currents node gradtall
-			}
-			for (V neighbour : graph.neighbours(currentNode)) {//legger til nabo i køen
-				if (!visited.contains(neighbour) && !queue.contains(neighbour)) {
-					queue.add(neighbour);
+			V currentNode = queue.poll();// henter og fjerner frøste node fra kjøen
+			for (V neighbour : graph.neighbours(currentNode)) {// for naboene til current
+				if (!depthMap.containsKey(neighbour)) {// hvis naboen ikke finnes i depthMap
+					int depth = depthMap.get(currentNode) + 1;// dybden plusses med 1
+					depthMap.put(neighbour, depth);// legger til naboen og dybden i hashmap
+					queue.add(neighbour);// legger til naboen i køen
+					if (depth > maxDepth) {// om dybden er større en max
+						maxDepth = depth; // blir max den gitte dybden
+					}
 				}
 			}
 		}
+
+		V champNode = null;// seiers node
+		int maxNeighbours = 0;// highscore variabel
+
+		for (Map.Entry<V, Integer> entry : depthMap.entrySet()) {// entry gjør det lett å iterere over
+			if (entry.getValue() == maxDepth - 1) {// bare noder som har max dybde, minus 1 så får jeg foreldre
+				int currentNeighbourCount = graph.degree(entry.getKey());// teller naboene til en gitt node
+				if (currentNeighbourCount > maxNeighbours) {// hvis currentGradtall er større en maxGradtall
+					maxNeighbours = currentNeighbourCount;// settes currentGradtall til maxGradtall
+					champNode = entry.getKey();// champNode blir kandidat for noden som skal returneres
+				}
+			}
+		}
+
 		return champNode;
 	}
 
 	private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {
 		LinkedList<Graph<V>> treeList = new LinkedList<>();
-		//her er d noe problem
+
+		
 		for (V node : g.neighbours(root)) {
 			treeList.add(bfsSubTree(node, g, root));
-			//gjøre om en tuple med [(g1,r1),(g2,r2)]
-			
 		}
-
+		
 		treeList.sort(Comparator.comparingInt((Graph<V> graph) -> graph.numVertices()).reversed());
-		if (treeList.size() < 2) {
-			throw new IllegalStateException("Not enough subtrees to compare.");
-		}
+
 		return treeList;
 	}
+
 	
-	//må være feil her
-	private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g, V root) {// lagger subtree fra en gitt node. Vil at den skal finne							
+	private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g, V root) {// lagger subtree fra en gitt node. Vil at den
+																		// skal finne
 		Graph<V> subTree = new Graph<>();// nytt tomt tree
 		subTree.addVertex(startNode);// legger til ny root
 
@@ -162,7 +189,9 @@ public class ProblemSolver implements IProblem {
 			V current = queue.poll();// current er køens førstemann
 
 			for (V neighbor : g.neighbours(current)) {// for barna til current
-				if (!current.equals(neighbor) && !visited.contains(neighbor) &&!current.equals(root)) {// hvis naboene ikke er besøkt
+				if (!current.equals(neighbor) && !visited.contains(neighbor) && !current.equals(root)) {// hvis naboene
+																										// ikke er
+																										// besøkt
 					visited.add(neighbor);// legg til nabo i besøkt
 					queue.add(neighbor);// legg til nabo i kø
 
@@ -175,5 +204,3 @@ public class ProblemSolver implements IProblem {
 	}
 
 }
-//vil finne subtree subtree subtree
-//liste med [(root1, g1), (root2, g2)]
