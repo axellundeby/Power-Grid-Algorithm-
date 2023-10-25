@@ -160,17 +160,50 @@ private <V> V getDeepestParentWithMostNeighbours(Graph<V> graph) {//O(n)
 	return champNode;
 }
 
+// private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {
+// 	LinkedList<Graph<V>> treeList = new LinkedList<>();
+
+// 	for (V node : g.neighbours(root)) {
+// 		treeList.add(bfsSubTree(node, g, root));
+// 	}
+
+// 	treeList.sort(Comparator.comparingInt((Graph<V> graph) -> graph.numVertices()).reversed());//victor hjelp
+// 	return treeList;
+// }
+
 
 private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {
-	LinkedList<Graph<V>> treeList = new LinkedList<>();
+    Graph<V> largestSubTree = null;
+    Graph<V> secondLargestSubTree = null;
+    int largestSize = 0;
+    int secondLargestSize = 0;
 
-	for (V node : g.neighbours(root)) {
-		treeList.add(bfsSubTree(node, g, root));
-	}
+    for (V node : g.neighbours(root)) {
+        Graph<V> currentSubTree = bfsSubTree(node, g, root);
+        int currentSize = currentSubTree.numVertices();
 
-	treeList.sort(Comparator.comparingInt((Graph<V> graph) -> graph.numVertices()).reversed());//victor hjelp
-	return treeList;
+        if (currentSize > largestSize) {
+            secondLargestSize = largestSize;
+            secondLargestSubTree = largestSubTree;
+
+            largestSize = currentSize;
+            largestSubTree = currentSubTree;
+        } else if (currentSize > secondLargestSize) {
+            secondLargestSize = currentSize;
+            secondLargestSubTree = currentSubTree;
+        }
+    }
+
+    LinkedList<Graph<V>> result = new LinkedList<>();
+    if (largestSubTree != null) {
+        result.add(largestSubTree);
+    }
+    if (secondLargestSubTree != null) {
+        result.add(secondLargestSubTree);
+    }
+    return result;
 }
+
 
 
 private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g, V root) {	

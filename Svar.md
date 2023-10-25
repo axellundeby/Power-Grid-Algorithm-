@@ -48,7 +48,7 @@ For each method of the different strategies give a runtime analysis in Big-O not
     * * With the loop iterating through a node's neighbors, each node is processed only once in DFS due to the parentMap if test. Despite the nested loop, each node and * * edge is handled once, leading to a runtime of O(n+m). For a connected graph, with m being at least 1 n−1, the worst-case runtime is O(n).*
 
 
-* ``addRedundant(Graph<T> g, T root)``: O(?)
+* ``addRedundant(Graph<T> g, T root)``: O(d×m)?
     * *Insert description of why the method has the given runtime*
 
     # helper for addRedundant
@@ -69,6 +69,6 @@ For each method of the different strategies give a runtime analysis in Big-O not
     *  * The primary contributors to this complexity are BFS and final loop*
     *  * I have allready proven that BFS = O(n) in bfsSubTree() *
     *  * The final loop iterates over the depthMap that contains V nodes and therefore is O(v)*
-    * * Therefore, the total calculation is O(v) + O(n) = O(n) *
+    *  * Therefore, the total calculation is O(v) + O(n) = O(n) *
 
 
