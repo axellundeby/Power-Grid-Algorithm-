@@ -113,14 +113,11 @@ public <V> Edge<V> addRedundant(Graph<V> g, V root) {
 	if (node1 != null && node2 != null) {
 		edge = new Edge<V>(node1, node2);
 		}
-	else if(node1 != null) {
-		edge = new Edge<V>(root, node1);
-	}
 	return edge;
 }
 
 
-private static <V> V getDeepestParentWithMostNeighbours(Graph<V> graph) {
+private <V> V getDeepestParentWithMostNeighbours(Graph<V> graph) {//O(n)
 	Map<V, Integer> depthMap = new HashMap<>();//dybde map
 	Map<V, Integer> scoreMap = new HashMap<>();//socring map
 	Queue<V> queue = new LinkedList<>();
@@ -171,7 +168,7 @@ private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {
 		treeList.add(bfsSubTree(node, g, root));
 	}
 
-	treeList.sort(Comparator.comparingInt((Graph<V> graph) -> graph.numVertices()).reversed());
+	treeList.sort(Comparator.comparingInt((Graph<V> graph) -> graph.numVertices()).reversed());//victor hjelp
 	return treeList;
 }
 
@@ -190,10 +187,9 @@ private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g, V root) {
 		V current = queue.poll();// current er køens førstemann
 
 		for (V neighbor : g.neighbours(current)) {// for barna til current
-			if (!current.equals(neighbor) && !visited.contains(neighbor) && !current.equals(root)) {																
+			if (!current.equals(neighbor) && !visited.contains(neighbor) && !current.equals(root)) {	
 				visited.add(neighbor);// legg til nabo i besøkt
 				queue.add(neighbor);// legg til nabo i kø
-
 				subTree.addVertex(neighbor);// legger til noden i treet
 				subTree.addEdge(current, neighbor);// legger til kanten i treet
 			}

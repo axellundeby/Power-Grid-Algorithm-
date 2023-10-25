@@ -32,6 +32,7 @@ For each method of the different strategies give a runtime analysis in Big-O not
 **If you have implemented any helper methods you must add these as well.**
 
 * ``mst(WeightedGraph<T, E> g)``: O(E * log E) 
+    * * The primary contributors to this complexity are adding all edges to a list, sorting, and union find*
     * * Adding all the edges to the "edges" list = O(E)*
     * * Sorting the edges based on weight = O(E * log E)*
     * * Union-find uses O(V)*
@@ -49,4 +50,25 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
 * ``addRedundant(Graph<T> g, T root)``: O(?)
     * *Insert description of why the method has the given runtime*
+
+    # helper for addRedundant
+* ``bfsSubTree(V startNode, Graph<V> g, V root)``: O(n)
+    * * The primary contributors to this complexity are The outer loop and The inner loop*
+    * * The outer loop: Runs for every node that can be reached from the start node, contributing to O(V).*
+    * * The inner loop: terates over the neighbors of each vertex. On average, this will run E/V times, giving a contribution of O(E)*
+    * * Therefore, the total calculation is O(V+E).This can be referred to as linear, or O(n), where n represents the size of the input graph.*
+
+
+* ``biggestSubTreeList(Graph<V> g, V root)``: O(n log n)
+    * * The primary contributors to this complexity are iterating over roots neigbours and sorting the list of trees*
+    * * Making the subtrees has the runtime: O(n) *
+    * * Sorting the subtrees has the runtime: O(n* log(n)) *
+    * * Therefore, the total calculation is O(n* log(n)) + O(n) = O(n log n) *
+
+* ``getDeepestParentWithMostNeighbours(Graph<V> graph)``: O(n)
+    *  * The primary contributors to this complexity are BFS and final loop*
+    *  * I have allready proven that BFS = O(n) in bfsSubTree() *
+    *  * The final loop iterates over the depthMap that contains V nodes and therefore is O(v)*
+    * * Therefore, the total calculation is O(v) + O(n) = O(n) *
+
 
