@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -18,7 +17,7 @@ import graph.*;
 public class ProblemSolver implements IProblem {
 
 @Override
-public <V, E extends Comparable<E>> ArrayList<Edge<V>> mst(WeightedGraph<V, E> g) {
+public <V, E extends Comparable<E>> ArrayList<Edge<V>> mst(WeightedGraph<V, E> g) {//O(E * log E) + O(E) + O(V) = O(E * log E)
 	ArrayList<Edge<V>> mst = new ArrayList<>();
 	UnionFind<V> connected = new UnionFindBySize<>(g.vertices());
 	ArrayList<Edge<V>> edges = new ArrayList<>();
@@ -40,7 +39,7 @@ public <V, E extends Comparable<E>> ArrayList<Edge<V>> mst(WeightedGraph<V, E> g
 }
 
 @Override
-public <V> V lca(Graph<V> g, V root, V u, V v) {
+public <V> V lca(Graph<V> g, V root, V u, V v) {// O(n) + O(n) + O(n) = O(n)
 	List<V> pathU = dfsPath(root, u, g);
 	List<V> pathV = dfsPath(root, v, g);
 
@@ -61,7 +60,7 @@ public <V> V lca(Graph<V> g, V root, V u, V v) {
 	return lastCommon;
 }
 
-private <V> LinkedList<V> dfsPath(V root, V target, Graph<V> graph) {
+private <V> LinkedList<V> dfsPath(V root, V target, Graph<V> graph) { //O(n)
 	Stack<V> stack = new Stack<>();
 	Map<V, V> parentMap = new HashMap<>();// hashMap med <child, parent>
 	LinkedList<V> path = new LinkedList<>();

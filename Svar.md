@@ -31,10 +31,22 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
 **If you have implemented any helper methods you must add these as well.**
 
-* ``mst(WeightedGraph<T, E> g)``: O(?)
-    * *Insert description of why the method has the given runtime*
-* ``lca(Graph<T> g, T root, T u, T v)``: O(?)
-    * *Insert description of why the method has the given runtime*
+* ``mst(WeightedGraph<T, E> g)``: O(E * log E) 
+    * * Adding all the edges to the "edges" list = O(E)*
+    * * Sorting the edges based on weight = O(E * log E)*
+    * * Union-find uses O(V)*
+    * * Therefore, the total calculation is O(E * log E) + O(V) + O(E) = O(E * log E) *
+    * **
+    
+* ``lca(Graph<T> g, T root, T u, T v)``: O(n)
+    * * I call dfsPath twice, once for u and once for v. Then, I use a loop to compare the two paths. In the worst case, this comparison will also be O(n). 
+    * * This is beacuse: O(n) for the first dfsPath + O(n) for the second dfsPath + O(n) for the comparison = O(3n), which simplifies to O(n).*
+
+# helper for lca
+* ``dfsPath(V root, V target, Graph<V> graph)``: O(n)
+    * * With the loop iterating through a node's neighbors, each node is processed only once in DFS due to the parentMap if test. Despite the nested loop, each node and * * edge is handled once, leading to a runtime of O(n+m). For a connected graph, with m being at least 1 n−1, the worst-case runtime is O(n).*
+
+
 * ``addRedundant(Graph<T> g, T root)``: O(?)
     * *Insert description of why the method has the given runtime*
 
