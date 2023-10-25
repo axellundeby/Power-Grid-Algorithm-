@@ -41,12 +41,10 @@ public <V, E extends Comparable<E>> ArrayList<Edge<V>> mst(WeightedGraph<V, E> g
 
 @Override
 public <V> V lca(Graph<V> g, V root, V u, V v) {
-	List<V> pathU = new ArrayList<>();
-	List<V> pathV = new ArrayList<>();
-	pathU = dfsPath(root, u, g);
-	pathV = dfsPath(root, v, g);
+	List<V> pathU = dfsPath(root, u, g);
+	List<V> pathV = dfsPath(root, v, g);
 
-	// finner den korteste listen
+
 	int size = pathV.size();
 	if (size > pathU.size()) {
 		size = pathU.size();
@@ -76,7 +74,7 @@ private <V> LinkedList<V> dfsPath(V root, V target, Graph<V> graph) {
 
 		if (current.equals(target)) {// hvis vi har funnet target
 			for (V node = target; node != null; node = parentMap.get(node)) {
-				path.add(0, node); // legger til alle foreldrene til vi kommer til root
+				path.addFirst(node); // legger til alle foreldrene til vi kommer til root
 			}
 			return path;
 		}
@@ -95,10 +93,10 @@ private <V> LinkedList<V> dfsPath(V root, V target, Graph<V> graph) {
 
 @Override
 public <V> Edge<V> addRedundant(Graph<V> g, V root) {
-	LinkedList<Graph<V>> Trees = biggestSubTreeList(g, root);
+	LinkedList<Graph<V>> treeList = biggestSubTreeList(g, root);
 
-	Graph<V> firstBiggestTree = Trees.poll();
-	Graph<V> secondBiggestTree = Trees.poll();
+	Graph<V> firstBiggestTree = treeList.poll();
+	Graph<V> secondBiggestTree = treeList.poll();
 
 	V node1 = null;
 	V node2 = null;
@@ -143,12 +141,6 @@ private static <V> V getDeepestParentWithMostNeighbours(Graph<V> graph) {
 				depthMap.put(neighbour, depth);// legger til naboen og dybden i hashmap
 				scoreMap.put(neighbour, scoreMap.get(currentNode) + graph.degree(neighbour)); //naboens score er summen av CurrentNode og gradtallet til naboen til Current
 				//Dette gjør at jeg kan vektlegge den beste pahten
-				//b, 2
-				//a, 3
-
-				//e, 3
-				//c, 4
-				//d, 4
 				queue.add(neighbour);//legger til naboen i køen
 				if (depth > maxDepth) { //om dybden er større en max
 					maxDepth = depth;// ny highScore
