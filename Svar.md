@@ -60,12 +60,15 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
 
 * ``biggestSubTreeList(Graph<V> g, V root)``: O(n)
-    * * The method keeps track of the two largest subtrees in terms of node count during construction. By performing direct comparisons during subtree construction,*   * * the method efficiently tracks the largest and second-largest subtrees in O(1) time for each neighbor. The dominant time complexity is O(n), coming from the BFS* * * traversal across all neighbors.  * 
+   * * The biggestSubTreeList() method constructs subtrees for each neighbor of a given root using BFS, which has a linear runtime. The method then uses *
+   * * Collections.max() twice to extract the largest and second-largest subtrees, each time taking a linear traversal. Despite both methods (sorting and *
+   * * using Collections.max()) being classified as O(n) in terms of big O notation, the method using Collections.max() may traverse the list twice, potentially *
+   * * making it less efficient for larger lists compared to the sorting approach. Overall, the dominant time complexity of the method remains O(n). *
 
 * ``getDeepestParentWithMostNeighbours(Graph<V> graph)``: O(n)
     *  * The primary contributors to this complexity are BFS and final loop*
     *  * I have allready proven that BFS = O(n) in bfsSubTree() *
-    *  * The final loop iterates over the depthMap that contains V nodes and therefore is O(v)*
-    *  * Therefore, the total calculation is O(v) + O(n) = O(n) *
+    *  * The final loop iterates over the depthMap that contains nodes and therefore is O(n)*
+    *  * Therefore, the total calculation is O(n) + O(n) = O(n) *
 
 

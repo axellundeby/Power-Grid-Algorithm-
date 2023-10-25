@@ -91,7 +91,7 @@ private <V> LinkedList<V> dfsPath(V root, V target, Graph<V> graph) { //O(n)
 }
 
 @Override
-public <V> Edge<V> addRedundant(Graph<V> g, V root) {
+public <V> Edge<V> addRedundant(Graph<V> g, V root) {//O(n)
 	LinkedList<Graph<V>> treeList = biggestSubTreeList(g, root);
 
 	Graph<V> firstBiggestTree = treeList.poll();
@@ -160,27 +160,34 @@ private <V> V getDeepestParentWithMostNeighbours(Graph<V> graph) {//O(n)
 	return champNode;
 }
 
-private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {
+private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {//O(n)
     List<Graph<V>> treeList = new ArrayList<>();
 
     for (V node : g.neighbours(root)) {
         treeList.add(bfsSubTree(node, g, root));
     }
 
-    Graph<V> largestTree = Collections.max(treeList, Comparator.comparingInt(Graph::numVertices));
+    Graph<V> largestTree = null;
+    Graph<V> secondLargestTree = null;
 
-    treeList.remove(largestTree);
+    if (!treeList.isEmpty()) {
+        largestTree = Collections.max(treeList, Comparator.comparingInt(Graph::numVertices));
+        treeList.remove(largestTree);
+    }
 
-    Graph<V> secondLargestTree = Collections.max(treeList, Comparator.comparingInt(Graph::numVertices));
+    if (!treeList.isEmpty()) {
+        secondLargestTree = Collections.max(treeList, Comparator.comparingInt(Graph::numVertices));
+    }
 
     LinkedList<Graph<V>> result = new LinkedList<>();
-    result.add(largestTree);
-    result.add(secondLargestTree);
+    if (largestTree != null) result.add(largestTree);
+    if (secondLargestTree != null) result.add(secondLargestTree);
     return result;
 }
 
 
-private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g, V root) {	
+
+private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g, V root) {//O(n)
 	Graph<V> subTree = new Graph<>();// nytt tomt tree
 	subTree.addVertex(startNode);// legger til ny root
 
