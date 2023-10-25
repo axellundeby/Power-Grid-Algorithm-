@@ -92,10 +92,10 @@ private <V> LinkedList<V> dfsPath(V root, V target, Graph<V> graph) { //O(n)
 
 @Override
 public <V> Edge<V> addRedundant(Graph<V> g, V root) {//O(n)
-	LinkedList<Graph<V>> treeList = biggestSubTreeList(g, root);
+	LinkedList<Graph<V>> biggestTreeList = biggestSubTreeList(g, root);
 
-	Graph<V> firstBiggestTree = treeList.poll();
-	Graph<V> secondBiggestTree = treeList.poll();
+	Graph<V> firstBiggestTree = biggestTreeList.poll();
+	Graph<V> secondBiggestTree = biggestTreeList.poll();
 
 	V node1 = null;
 	V node2 = null;
@@ -161,28 +161,28 @@ private <V> V getDeepestParentWithMostNeighbours(Graph<V> graph) {//O(n)
 }
 
 private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {//O(n)
-    List<Graph<V>> treeList = new ArrayList<>();
+    List<Graph<V>> treeList = new ArrayList<>();//tom liste
 
-    for (V node : g.neighbours(root)) {
-        treeList.add(bfsSubTree(node, g, root));
+    for (V node : g.neighbours(root)) {//roots naboer skal bli trær
+        treeList.add(bfsSubTree(node, g, root));//legger til subtrær i den tomme listen
     }
 
     Graph<V> largestTree = null;
     Graph<V> secondLargestTree = null;
 
     if (!treeList.isEmpty()) {
-        largestTree = Collections.max(treeList, Comparator.comparingInt(Graph::numVertices));
-        treeList.remove(largestTree);
+        largestTree = Collections.max(treeList, Comparator.comparingInt(Graph::numVertices));// henter ut største tree fra listen
+        treeList.remove(largestTree);//fjerner så dette treet
     }
 
     if (!treeList.isEmpty()) {
-        secondLargestTree = Collections.max(treeList, Comparator.comparingInt(Graph::numVertices));
+        secondLargestTree = Collections.max(treeList, Comparator.comparingInt(Graph::numVertices));// henter det nye søtste
     }
-
-    LinkedList<Graph<V>> result = new LinkedList<>();
-    if (largestTree != null) result.add(largestTree);
-    if (secondLargestTree != null) result.add(secondLargestTree);
-    return result;
+	//legger de til i ny liste
+    LinkedList<Graph<V>> biggestTreeList = new LinkedList<>();
+    if (largestTree != null) biggestTreeList.add(largestTree);
+    if (secondLargestTree != null) biggestTreeList.add(secondLargestTree);
+    return biggestTreeList;
 }
 
 
