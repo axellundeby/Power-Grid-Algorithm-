@@ -40,15 +40,15 @@ For each method of the different strategies give a runtime analysis in Big-O not
     * **
     
 * ``lca(Graph<T> g, T root, T u, T v)``: O(n)
-    * * I call dfsPath twice, once for u and once for v. Then, I use a loop to compare the two paths. In the worst case, this comparison will also be O(n). 
+    * * I call dfsPath twice, once for u and once for v. Then, I use a loop to compare the two paths. In the worst case, this comparison will also be O(n).* 
     * * This is beacuse: O(n) for the first dfsPath + O(n) for the second dfsPath + O(n) for the comparison = O(3n), which simplifies to O(n).*
 
 # helper for lca
 * ``dfsPath(V root, V target, Graph<V> graph)``: O(n)
-    * * With the loop iterating through a node's neighbors, each node is processed only once in DFS due to the parentMap if test. Despite the nested loop, each node and * * edge is handled once, leading to a runtime of O(n+m). For a connected graph, with m being at least 1 n−1, the worst-case runtime is O(n).*
+    * * With the loop iterating through a node's neighbors, each node is processed only once in DFS due to the parentMap if test.Despite the nested loop, each node and* * * edge is handled once, leading to a runtime of O(n+m). For a connected graph, with m being at least 1 n−1, the worst-case runtime is O(n).*
 
 
-* ``addRedundant(Graph<T> g, T root)``: O(d×m)?
+* ``addRedundant(Graph<T> g, T root)``: O(n)
     * *Insert description of why the method has the given runtime*
 
     # helper for addRedundant
@@ -59,11 +59,8 @@ For each method of the different strategies give a runtime analysis in Big-O not
     * * Therefore, the total calculation is O(V+E).This can be referred to as linear, or O(n), where n represents the size of the input graph.*
 
 
-* ``biggestSubTreeList(Graph<V> g, V root)``: O(n log n)
-    * * The primary contributors to this complexity are iterating over roots neigbours and sorting the list of trees*
-    * * Making the subtrees has the runtime: O(n) *
-    * * Sorting the subtrees has the runtime: O(n* log(n)) *
-    * * Therefore, the total calculation is O(n* log(n)) + O(n) = O(n log n) *
+* ``biggestSubTreeList(Graph<V> g, V root)``: O(n)
+    * * The method keeps track of the two largest subtrees in terms of node count during construction. By performing direct comparisons during subtree construction,*   * * the method efficiently tracks the largest and second-largest subtrees in O(1) time for each neighbor. The dominant time complexity is O(n), coming from the BFS* * * traversal across all neighbors.  * 
 
 * ``getDeepestParentWithMostNeighbours(Graph<V> graph)``: O(n)
     *  * The primary contributors to this complexity are BFS and final loop*

@@ -160,50 +160,24 @@ private <V> V getDeepestParentWithMostNeighbours(Graph<V> graph) {//O(n)
 	return champNode;
 }
 
-// private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {
-// 	LinkedList<Graph<V>> treeList = new LinkedList<>();
-
-// 	for (V node : g.neighbours(root)) {
-// 		treeList.add(bfsSubTree(node, g, root));
-// 	}
-
-// 	treeList.sort(Comparator.comparingInt((Graph<V> graph) -> graph.numVertices()).reversed());//victor hjelp
-// 	return treeList;
-// }
-
-
 private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {
-    Graph<V> largestSubTree = null;
-    Graph<V> secondLargestSubTree = null;
-    int largestSize = 0;
-    int secondLargestSize = 0;
+    List<Graph<V>> treeList = new ArrayList<>();
 
     for (V node : g.neighbours(root)) {
-        Graph<V> currentSubTree = bfsSubTree(node, g, root);
-        int currentSize = currentSubTree.numVertices();
-
-        if (currentSize > largestSize) {
-            secondLargestSize = largestSize;
-            secondLargestSubTree = largestSubTree;
-
-            largestSize = currentSize;
-            largestSubTree = currentSubTree;
-        } else if (currentSize > secondLargestSize) {
-            secondLargestSize = currentSize;
-            secondLargestSubTree = currentSubTree;
-        }
+        treeList.add(bfsSubTree(node, g, root));
     }
+
+    Graph<V> largestTree = Collections.max(treeList, Comparator.comparingInt(Graph::numVertices));
+
+    treeList.remove(largestTree);
+
+    Graph<V> secondLargestTree = Collections.max(treeList, Comparator.comparingInt(Graph::numVertices));
 
     LinkedList<Graph<V>> result = new LinkedList<>();
-    if (largestSubTree != null) {
-        result.add(largestSubTree);
-    }
-    if (secondLargestSubTree != null) {
-        result.add(secondLargestSubTree);
-    }
+    result.add(largestTree);
+    result.add(secondLargestTree);
     return result;
 }
-
 
 
 private <V> Graph<V> bfsSubTree(V startNode, Graph<V> g, V root) {	
