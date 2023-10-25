@@ -12,6 +12,8 @@ Briefly describe your implementation of the different methods. What was your ide
 *Enter description*
 
 
+Tanken bak dette er å favorisere stier som går gjennom noder med mange naboer, da de bidrar mer til den akkumulerte scoren. Den akkumulerte scoren fungerer som en heuristikk for å bestemme den "beste" stien gjennom grafen basert på antallet naboer hver node har.
+
 # Runtime Analysis
 For each method of the different strategies give a runtime analysis in Big-O notation and a description of why it has this runtime.
 
