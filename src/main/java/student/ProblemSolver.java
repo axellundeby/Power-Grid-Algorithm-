@@ -160,7 +160,7 @@ private <V> V getDeepestParentWithMostNeighbours(Graph<V> graph) {//O(n)
 	return champNode;
 }
 
-private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {//O(n)
+private <V> LinkedList<Graph<V>> biggestSubTreeList(Graph<V> g, V root) {//O(n) + O(n) + O(n) = O(n)
     List<Graph<V>> treeList = new ArrayList<>();//tom liste
 
     for (V node : g.neighbours(root)) {//roots naboer skal bli trær

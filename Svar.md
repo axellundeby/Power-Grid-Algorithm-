@@ -14,13 +14,13 @@ Briefly describe your implementation of the different methods. What was your ide
 
     # Description:
 
-    I'm using the Kruskal's algorithm to find the MST. The most challenging part of this task was realizing that I needed the Union-Find data structure. Martin showed this in the lecture. After that, it went well.
+    I'm using the Kruskal's algorithm to find the MST. The most challenging part of this task was realizing that I needed the Union-Find data structure. Martin showed this in the lecture. After that, it went well.  Kruskal's algorithm sorts all the edges from the least weight to the greatest, then selecting the smallest edges one by one, ensuring that the addition of each edge does not form a cycle. The process continues until a spanning tree is formed or all edges are considered.
 
 ## Task 2 - lca
 
     # Idea: 
 
-    My idea was to use DFS to store a path from the root to a given node, I do this for the two given nodes. Then, I compare the paths to find the LCA (Lowest Common Ancestor).
+    My idea was to use DFS to store a path from the root to a given node in a helper method, I do this for the two given nodes. Then, I compare the paths to find the  Lowest Common Ancestor.
 
     # Description
 
@@ -30,7 +30,7 @@ Briefly describe your implementation of the different methods. What was your ide
 
     # Idea:
 
-    My initial idea was to first identify the two largest subtrees of the root and then find the deepest parent node that scores the highest based on the number of neighbors. Therefore, I use an accumulated score and score the nodes based on their previous neighbors and a current node's neighbors. If the node is deep enough and has the best neighbor path, I choose this node. I do this for the two largest subtrees and create an edge between these nodes.
+    My initial idea was to first identify the two largest subtrees of the root and then find the deepest parent node that scores the highest based on the number of neighbors. Therefore, I use an accumulated score and score the nodes based on their previous neighbors and a current node's neighbors. If the node is deep enough and has the best neighbor path score, I choose this node. I do this for the two largest subtrees and create an edge between these nodes.
 
     # Challenges faced: 
 
@@ -66,16 +66,18 @@ For each method of the different strategies give a runtime analysis in Big-O not
     * * Sorting the edges based on weight = O(E * log E)*
     * * Union-find uses O(V)*
     * * Therefore, the total calculation is O(E * log E) + O(V) + O(E) = O(E * log E) *
-    * **
+
 
 ## lca
 * ``lca(Graph<T> g, T root, T u, T v)``: O(n)
-    * * I call dfsPath twice, once for u and once for v. Then, I use a loop to compare the two paths. In the worst case, this comparison will also be O(n).* 
+    * * I call dfsPath twice, once for u and once for v. Then, I use a loop to compare the two paths. In the worst case, this comparison will be O(n).* 
     * * This is beacuse: O(n) for the first dfsPath + O(n) for the second dfsPath + O(n) for the comparison = O(3n), which simplifies to O(n).*
 
 # helper for lca
 * ``dfsPath(V root, V target, Graph<V> graph)``: O(n)
-    * * With the loop iterating through a node's neighbors, each node is processed only once in DFS due to the parentMap if test.Despite the nested loop, each node and* * * edge is handled once, leading to a runtime of O(n+m). For a connected graph, with m being at least 1 n−1, the worst-case runtime is O(n).*
+    * * With the loop iterating through a node's neighbors, each node is processed only once in DFS due to the parentMap if test. Despite the nested loop, *
+    * * each node and edge is handled once, leading to a runtime of O(n+m). For a connected graph, with m being at least 1 n−1, the worst-case runtime is O(n).*
+
 
 ## addRedundant
 * ``addRedundant(Graph<T> g, T root)``: O(n)
@@ -83,25 +85,25 @@ For each method of the different strategies give a runtime analysis in Big-O not
        * * biggestSubTreeList(): Retrieving subtrees is O(n).*
        * * getDeepestParentWithMostNeighbours(): Finding the 1st node is O(n).*
        * * getDeepestParentWithMostNeighbours(): Finding the 2nd node is O(n).*
-    * * Therefore, the total calculation is O(n) + O(n) + O(n) = O(n)*
+       * * Therefore, the total calculation is O(n) + O(n) + O(n) = O(n)*
 
     # helper for addRedundant
 * ``bfsSubTree(V startNode, Graph<V> g, V root)``: O(n)
     * * The primary contributors to this complexity are The outer loop and The inner loop*
     * * The outer loop: Runs for every node that can be reached from the start node, contributing to O(V).*
-    * * The inner loop: terates over the neighbors of each vertex. On average, this will run E/V times, giving a contribution of O(E)*
-    * * Therefore, the total calculation is O(V+E).This can be referred to as linear, or O(n), where n represents the size of the input graph.*
-
+    * * The inner loop: For each node, the function inspects its neighboring edges O(E)*
+    * * Therefore, the total calculation is O(V+E).This can be referred to as linear, or O(n).*
 
 * ``biggestSubTreeList(Graph<V> g, V root)``: O(n)
-   * * The biggestSubTreeList() method constructs subtrees for each neighbor of a given root using BFS, which has a linear runtime. The method then uses *
-   * * Collections.max() twice to extract the largest and second-largest subtrees, each time taking a linear traversal. Despite both methods (sorting and *
-   * * using Collections.max()) being classified as O(n) in terms of big O notation, the method using Collections.max() may traverse the list twice, potentially *
-   * * making it less efficient for larger lists compared to the sorting approach. Overall, the dominant time complexity of the method remains O(n). *
+    * * The primary contributors to this complexity are looping over roots neighbors, and Collections.max() function*
+    * * Iterating over roots neighbors = O(n) *
+    * * Collections.max() = O(n) * 
+    * * Collections.max() = O(n) * 
+    * * O(n) + O(n) + O(n), which simplifies to O(n) in Big O notation. Thus, the worst-case runtime complexity of the biggestSubTreeList() function is O(n). *
 
 * ``getDeepestParentWithMostNeighbours(Graph<V> graph)``: O(n)
     *  * The primary contributors to this complexity are BFS and final loop*
-    *  * I have allready proven that BFS = O(n) in bfsSubTree() *
+    *  * I have allready proven that BFS is linear or O(n) in bfsSubTree() *
     *  * The final loop iterates over the depthMap that contains nodes and therefore is O(n)*
     *  * Therefore, the total calculation is O(n) + O(n) = O(n) *
 
