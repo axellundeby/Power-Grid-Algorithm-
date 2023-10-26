@@ -81,11 +81,11 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
 ## addRedundant
 * ``addRedundant(Graph<T> g, T root)``: O(n)
-       * * The primary contributors to this complexity are creating subtrees and finding the 2 nodes.*
-       * * biggestSubTreeList(): Retrieving subtrees is O(n).*
-       * * getDeepestParentWithMostNeighbours(): Finding the 1st node is O(n).*
-       * * getDeepestParentWithMostNeighbours(): Finding the 2nd node is O(n).*
-       * * Therefore, the total calculation is O(n) + O(n) + O(n) = O(n)*
+    * * The primary contributors to this complexity are creating subtrees and finding the 2 nodes.*
+    * * biggestSubTreeList(): Retrieving subtrees is O(n).*
+    * * getDeepestParentWithMostNeighbours(): Finding the 1st node is O(n).*
+    * * getDeepestParentWithMostNeighbours(): Finding the 2nd node is O(n).*
+    * * Therefore, the total calculation is O(n) + O(n) + O(n) = O(n)*
 
     # helper for addRedundant
 * ``bfsSubTree(V startNode, Graph<V> g, V root)``: O(n)
