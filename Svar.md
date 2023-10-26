@@ -75,8 +75,8 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
 # helper for lca
 * ``dfsPath(V root, V target, Graph<V> graph)``: O(n)
-    * * With the loop iterating through a node's neighbors, each node is processed only once in DFS due to the parentMap if test. Despite the nested loop, *
-    * * each node and edge is handled once, leading to a runtime of O(n+m). For a connected graph, with m being at least 1 n−1, the worst-case runtime is O(n).*
+    * * The runtime is linear because, using DFS and the parentMap, each node and edge in the graph is visited and processed at most once, yielding a *
+    * * time complexity of O(n+m), which simplifies to O(n) for connected graphs.* 
 
 
 ## addRedundant
@@ -89,10 +89,8 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
     # helper for addRedundant
 * ``bfsSubTree(V startNode, Graph<V> g, V root)``: O(n)
-    * * The primary contributors to this complexity are The outer loop and The inner loop*
-    * * The outer loop: Runs for every node that can be reached from the start node, contributing to O(V).*
-    * * The inner loop: For each node, the function inspects its neighboring edges O(E)*
-    * * Therefore, the total calculation is O(V+E).This can be referred to as linear, or O(n).*
+    * * The runtime is linear because, using BFS and the visited set, each node and edge in the graph is visited and processed at most once, resulting* 
+    * * in a time complexity of O(n+m), which simplifies to O(n) for connected graphs.*
 
 * ``biggestSubTreeList(Graph<V> g, V root)``: O(n)
     * * The primary contributors to this complexity are looping over roots neighbors, and Collections.max() function*
