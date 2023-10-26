@@ -17,7 +17,7 @@ import graph.*;
 public class ProblemSolver implements IProblem {
 
 @Override
-public <V, E extends Comparable<E>> ArrayList<Edge<V>> mst(WeightedGraph<V, E> g) {//O(E * log E) + O(E) + O(V) = O(E * log E)
+public <V, E extends Comparable<E>> ArrayList<Edge<V>> mst(WeightedGraph<V, E> g) {//O(m * log m) + O(m) + O(n) = O(m * log m)
 	ArrayList<Edge<V>> mst = new ArrayList<>();
 	UnionFind<V> connected = new UnionFindBySize<>(g.vertices());
 	ArrayList<Edge<V>> edges = new ArrayList<>();

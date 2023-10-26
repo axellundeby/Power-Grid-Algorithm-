@@ -60,12 +60,12 @@ For each method of the different strategies give a runtime analysis in Big-O not
 **If you have implemented any helper methods you must add these as well.**
 
 ## mst
-* ``mst(WeightedGraph<T, E> g)``: O(E * log E) 
+* ``mst(WeightedGraph<T, E> g)``: O(m * log m) 
     * * The primary contributors to this complexity are adding all edges to a list, sorting, and union find*
-    * * Adding all the edges to the "edges" list = O(E)*
-    * * Sorting the edges based on weight = O(E * log E)*
+    * * Adding all the edges to the "edges" list = O(n)*
+    * * Sorting the edges based on weight = O(m * log m)*
     * * Union-find uses O(V)*
-    * * Therefore, the total calculation is O(E * log E) + O(V) + O(E) = O(E * log E) *
+    * * Therefore, the total calculation is O(m * log m) + O(n) + O(m) = O(m * log m) *
 
 
 ## lca
