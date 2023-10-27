@@ -66,50 +66,50 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
 ## mst
 * ``mst(WeightedGraph<T, E> g)``: O(m * log m) 
-    * * The primary contributors to this complexity are adding all edges to a list, sorting, and union find*
-    * * Adding all the edges to the "edges" list = O(n)*
-    * * Sorting the edges based on weight = O(m * log m)*
-    * * Union-find uses O(V)*
-    * * Therefore, the total calculation is O(m * log m) + O(n) + O(m) = O(m * log m) *
+    * The primary contributors to this complexity are adding all edges to a list, sorting, and union find*
+    * Adding all the edges to the "edges" list = O(n)*
+    * Sorting the edges based on weight = O(m * log m)*
+    * Union-find uses O(V)*
+    * Therefore, the total calculation is O(m * log m) + O(n) + O(m) = O(m * log m) *
 
 
 ## lca
 * ``lca(Graph<T> g, T root, T u, T v)``: O(n)
-    * * I call dfsPath twice, once for u and once for v. Then, I use a loop to compare the two paths. In the worst case, this comparison will be O(n).* 
-    * * This is beacuse: O(n) for the first dfsPath + O(n) for the second dfsPath + O(n) for the comparison = O(3n), which simplifies to O(n).*
+    * I call dfsPath twice, once for u and once for v. Then, I use a loop to compare the two paths. In the worst case, this comparison will be O(n).* 
+    * This is beacuse: O(n) for the first dfsPath + O(n) for the second dfsPath + O(n) for the comparison = O(3n), which simplifies to O(n).*
 
 # helper for lca 
 * ``dfsPath(V root, V target, Graph<V> graph)``: O(n)
-    * * The primary contributors to this complexity are DFS* 
-    * * I have allready proven (above) that DFS is O(n) for this graph *
-    * * Therefore, the total calculation is O(n)*
+    * The primary contributors to this complexity are DFS
+    * I have allready proven (above) that DFS is O(n) for this graph 
+    * Therefore, the total calculation is O(n)
 
 
 ## addRedundant
 * ``addRedundant(Graph<T> g, T root)``: O(n)
-    * * The primary contributors to this complexity are creating subtrees and finding the 2 nodes.*
-    * * biggestSubTreeList(): Retrieving subtrees is O(n).*
-    * * getDeepestParentWithMostNeighbours(): Finding the 1st node is O(n).*
-    * * getDeepestParentWithMostNeighbours(): Finding the 2nd node is O(n).*
-    * * Therefore, the total calculation is O(n) + O(n) + O(n) = O(n)*
+    * The primary contributors to this complexity are creating subtrees and finding the 2 nodes.
+    * biggestSubTreeList(): Retrieving subtrees is O(n).
+    * getDeepestParentWithMostNeighbours(): Finding the 1st node is O(n).
+    * getDeepestParentWithMostNeighbours(): Finding the 2nd node is O(n).
+    * Therefore, the total calculation is O(n) + O(n) + O(n) = O(n)
 
     # helper for addRedundant
 * ``bfsSubTree(V startNode, Graph<V> g, V root)``: O(n)
-    * * The primary contributors to this complexity are BFS* 
-    * * I have allready proven (above) that BFS is O(n) for this graph*
-    * * Therefore, the total calculation is O(n)*
+    * The primary contributors to this complexity are BFS
+    * I have allready proven (above) that BFS is O(n) for this graph
+    * Therefore, the total calculation is O(n)
 
 * ``biggestSubTreeList(Graph<V> g, V root)``: O(n)
-    * * The primary contributors to this complexity are looping over roots neighbors, and Collections.max() function*
-    * * Iterating over roots neighbors = O(n) *
-    * * Collections.max() = O(n) * 
-    * * Collections.max() = O(n) * 
-    * * O(n) + O(n) + O(n), which simplifies to O(n) in Big O notation. Thus, the worst-case runtime complexity of the biggestSubTreeList() function is O(n). *
+    * The primary contributors to this complexity are looping over roots neighbors, and Collections.max() function
+    * Iterating over roots neighbors = O(n) 
+    * Collections.max() = O(n) 
+    * Collections.max() = O(n)  
+    * O(n) + O(n) + O(n), which simplifies to O(n) in Big O notation. Thus, the worst-case runtime complexity of the biggestSubTreeList() function is O(n). 
 
 * ``getDeepestParentWithMostNeighbours(Graph<V> graph)``: O(n)
-    * * The primary contributors to this complexity are BFS and final loop*
-    * * I have allready proven (above) that BFS is O(n) for this graph *
-    * * The final loop iterates over the depthMap that contains nodes and therefore is O(n)*
-    * * Therefore, the total calculation is O(n) + O(n) = O(n) *
+    * The primary contributors to this complexity are BFS and final loop
+    * I have allready proven (above) that BFS is O(n) for this graph 
+    * The final loop iterates over the depthMap that contains nodes and therefore is O(n)
+    * Therefore, the total calculation is O(n) + O(n) = O(n) 
 
 
