@@ -59,6 +59,11 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
 **If you have implemented any helper methods you must add these as well.**
 
+## Proving that BFS and DFS is O(n) for this graph
+   * * In a graph without loops, which is a tree structure, the number of edges will always be less than the number of nodes. Therefore, when *
+   * * performing a BFS or DFS traversal on such a tree, both will have a time complexity of O(n) because they will explore each node exactly once, and the *
+   * * number of edges is n-1. As a result, the overall runtime is O(n). *
+
 ## mst
 * ``mst(WeightedGraph<T, E> g)``: O(m * log m) 
     * * The primary contributors to this complexity are adding all edges to a list, sorting, and union find*
@@ -73,10 +78,11 @@ For each method of the different strategies give a runtime analysis in Big-O not
     * * I call dfsPath twice, once for u and once for v. Then, I use a loop to compare the two paths. In the worst case, this comparison will be O(n).* 
     * * This is beacuse: O(n) for the first dfsPath + O(n) for the second dfsPath + O(n) for the comparison = O(3n), which simplifies to O(n).*
 
-# helper for lca
+# helper for lca 
 * ``dfsPath(V root, V target, Graph<V> graph)``: O(n)
-    * * The runtime is linear because, using DFS and the parentMap, each node and edge in the graph is visited and processed at most once, yielding a *
-    * * time complexity of O(n+m), which simplifies to O(n) for connected graphs.* 
+    * * The primary contributors to this complexity are DFS* 
+    * * I have allready proven (above) that DFS is O(n) for this graph *
+    * * Therefore, the total calculation is O(n)*
 
 
 ## addRedundant
@@ -89,8 +95,9 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
     # helper for addRedundant
 * ``bfsSubTree(V startNode, Graph<V> g, V root)``: O(n)
-    * * The runtime is linear because, using BFS and the visited set, each node and edge in the graph is visited and processed at most once, resulting* 
-    * * in a time complexity of O(n+m), which simplifies to O(n) for connected graphs.*
+    * * The primary contributors to this complexity are BFS* 
+    * * I have allready proven (above) that BFS is O(n) for this graph*
+    * * Therefore, the total calculation is O(n)*
 
 * ``biggestSubTreeList(Graph<V> g, V root)``: O(n)
     * * The primary contributors to this complexity are looping over roots neighbors, and Collections.max() function*
@@ -100,9 +107,9 @@ For each method of the different strategies give a runtime analysis in Big-O not
     * * O(n) + O(n) + O(n), which simplifies to O(n) in Big O notation. Thus, the worst-case runtime complexity of the biggestSubTreeList() function is O(n). *
 
 * ``getDeepestParentWithMostNeighbours(Graph<V> graph)``: O(n)
-    *  * The primary contributors to this complexity are BFS and final loop*
-    *  * I have allready proven that BFS is linear or O(n) in bfsSubTree() *
-    *  * The final loop iterates over the depthMap that contains nodes and therefore is O(n)*
-    *  * Therefore, the total calculation is O(n) + O(n) = O(n) *
+    * * The primary contributors to this complexity are BFS and final loop*
+    * * I have allready proven (above) that BFS is O(n) for this graph *
+    * * The final loop iterates over the depthMap that contains nodes and therefore is O(n)*
+    * * Therefore, the total calculation is O(n) + O(n) = O(n) *
 
 

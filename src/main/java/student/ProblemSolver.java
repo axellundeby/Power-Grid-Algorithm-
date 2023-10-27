@@ -147,7 +147,7 @@ private <V> V getDeepestParentWithMostNeighbours(Graph<V> graph) {//O(n)
 	V champNode = null;//seiers node 
 	int maxScore = 0;//highScore
 
-	for (Map.Entry<V, Integer> entry : depthMap.entrySet()) {//entry gjør det lett å iterere over
+	for (Map.Entry<V, Integer> entry : depthMap.entrySet()) {//O(n)
 		if (entry.getValue() == maxDepth - 1) {//bare noder som har max dybde -1 
 			int currentScore = scoreMap.get(entry.getKey());// henter scoren fra scoreMapet
 			if (currentScore > maxScore) {//hvis currentGradtall er større en maxGradtall
