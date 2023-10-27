@@ -60,9 +60,9 @@ For each method of the different strategies give a runtime analysis in Big-O not
 **If you have implemented any helper methods you must add these as well.**
 
 ## Proving that BFS and DFS is O(n) for this graph
-   * * In a graph without loops, which is a tree structure, the number of edges will always be less than the number of nodes. Therefore, when *
-   * * performing a BFS or DFS traversal on such a tree, both will have a time complexity of O(n) because they will explore each node exactly once, and the *
-   * * number of edges is n-1. As a result, the overall runtime is O(n). *
+   In a graph without loops, which is a tree structure, the number of edges will always be less than the number of nodes. Therefore, when *
+   performing a BFS or DFS traversal on such a tree, both will have a time complexity of O(n) because they will explore each node exactly once, and the *
+   number of edges is n-1. As a result, the overall runtime is O(n). *
 
 ## mst
 * ``mst(WeightedGraph<T, E> g)``: O(m * log m) 
